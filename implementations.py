@@ -1,111 +1,117 @@
 import numpy as np
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-
+    """Gradient descent algorithm."""
     #ws = [initial_w]
     #losses = []
     w = initial_w
+    
     for n_iter in range(max_iters):
-        
-        error,grad = compute_gradient(y,tx,w)
+        error, grad = compute_gradient(y,tx,w)
         loss = compute_loss(y,tx,w)
-        
-        new_w = w - gamma*grad
-        w = new_w
+        w = w - gamma*grad
         
         #ws.append(w)
         #losses.append(loss)
-        
         print("Gradient Descent({bi}/{ti}): loss={l}, weights = {we}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, we = w ))
         
     return w, loss
 
+
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    ws = [initial_w]
-    losses = []
+    """Stochastic gradient descent algorithm."""
+    # ws = [initial_w]
+    #losses = []
     w = initial_w
+    
     for n_iter in range(max_iters):
         for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
         
-            # compute gradient and loss
-        
+            # Compute gradient and loss
             grad = compute_stoch_gradient(minibatch_y,minibatch_tx,w)
             loss = compute_loss(minibatch_y,minibatch_tx,w)
         
-            # update w by gradient
-        
+            # Update w by gradient
             new_w = w - gamma*grad
             w = new_w
         
-            # store w and loss
-            ws.append(w)
-            losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+            # Store w and loss
+            #ws.append(w)
+            #losses.append(loss)
+            print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
+                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+            
     return w, loss
+
 
 def least_squares(y, tx):
-    """calculate the least squares."""
+    """Least squares regression using normal equations."""
     n = len(y)
-    w = np.linalg.solve (np.dot(tx.transpose(),tx),np.dot(tx.transpose(),y))
-
-
+    
+    w = np.linalg.solve(np.dot(tx.transpose(),tx), np.dot(tx.transpose(),y))
     loss = compute_loss(y, tx, w)
+    
     return w, loss
 
-def ridge_regression(y, tx, lambda_):
 
+def ridge_regression(y, tx, lambda_):
+    """Ridge regression using normal equations."""
     n = len(y)
     
     a = np.dot(tx.transpose(),tx)+(2*n)*lambda_*np.identity(tx.shape[1])
     b = np.dot(tx.transpose(),y)
-    w =np.linalg.solve(a, b)
-
+    
+    w = np.linalg.solve(a, b)
     loss = compute_loss(y, tx, w)
     return w, loss
+
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     
     return w,loss
 
+
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma): 
 
     return w,loss
 
+
 def compute_loss(y, tx, w):
-    """compute the loss by mse."""
+    """Compute the loss by MSE."""
     e = y - tx.dot(w)
     mse = e.dot(e) / (2* len(e))
     return mse
 
+
 def compute_rmse(y, tx, w):
-    """compute the loss by mse."""
+    """Compute the loss by MSE."""
     e = y - tx.dot(w)
     mse = e.dot(e) / (2 * len(e))
     rmse = (2*mse)**(1/2)
     return rmse
 
+
 def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     phi = np.zeros((x.shape[0],degree+1))
     for j in range (0,degree+1):
         phi[:,j] = x**j
-        
     return phi
+
 
 def compute_gradient(y, tx, w):
     """Compute the gradient."""
-    
     print ('Computing gradients ...')
+    
     num_samples = len(y)
-    
     pred_y = np.dot(tx,w)
-    error = y-pred_y
     
+    error = y-pred_y
     grad_w = (-1/num_samples)*np.dot(tx.transpose(),error)
 
     return error, grad_w
+
 
 def standardize(x,id_axis):
     """Standardize the original data set."""
@@ -121,6 +127,7 @@ def build_model_data(x, y):
     num_samples = len(y)
     tx = np.c_[np.ones(num_samples), x]
     return y, tx
+
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -146,4 +153,3 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
-
