@@ -153,3 +153,22 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
+            
+def split_data(x, y, ratio, seed=1):
+    """split the dataset based on the split ratio."""
+    # set seed
+    np.random.seed(seed)
+    # ***************************************************
+    # INSERT YOUR CODE HERE
+    # split the data based on the given ratio: TODO
+    # ***************************************************
+    num_samples = len(x)
+    indices = np.random.permutation(num_samples)
+    indices_training = indices[0:int(np.floor(ratio * num_samples))]
+    indices_test = indices [int(np.floor(ratio * num_samples)):num_samples]
+    train_x = x[indices_training]
+    train_y = y[indices_training]
+    test_x = x[indices_test]
+    test_y = y[indices_test]
+    
+    return train_x, train_y, test_x, test_y
