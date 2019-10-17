@@ -1,174 +1,94 @@
 import numpy as np
+from cost import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-    """Gradient descent algorithm."""
-    #ws = [initial_w]
+
     #losses = []
     w = initial_w
+    thres = 1e-8
     
     for n_iter in range(max_iters):
-        error, grad = compute_gradient(y,tx,w)
-        loss = compute_loss(y,tx,w)
-        w = w - gamma*grad
         
-        #ws.append(w)
-        #losses.append(loss)
+        _,grad = compute_gradient(y,tx,w)
+        loss = compute_loss(y,tx,w)
+        
+        new_w = w - gamma*grad
+        w = new_w
+        
+        losses.append(loss)
+        
+        if len(losses) > 1 and np.abs(losses[-1]-losses[-2]) < thres :
+            break
+     #loss = losses [-1]   
         print("Gradient Descent({bi}/{ti}): loss={l}, weights = {we}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, we = w ))
         
     return w, loss
 
-
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    """Stochastic gradient descent algorithm."""
-    # ws = [initial_w]
-    #losses = []
-    w = initial_w
     
+    losses = []
+    w = initial_w
     for n_iter in range(max_iters):
         for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
         
-            # Compute gradient and loss
-            grad = compute_stoch_gradient(minibatch_y,minibatch_tx,w)
-            loss = compute_loss(minibatch_y,minibatch_tx,w)
+            # compute gradient and loss
         
-            # Update w by gradient
-            new_w = w - gamma*grad
-            w = new_w
+            _, grad = compute_gradient(minibatch_y,minibatch_tx,w)
+    
+            # update w by gradient
         
-            # Store w and loss
-            #ws.append(w)
-            #losses.append(loss)
-            print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+            w = w - gamma*grad
             
+    loss = compute_loss(minibatch_y,minibatch_tx,w)
+    losses.append(loss)
     return w, loss
-
 
 def least_squares(y, tx):
-    """Least squares regression using normal equations."""
+    """calculate the least squares."""
     n = len(y)
-    
-    w = np.linalg.solve(np.dot(tx.transpose(),tx), np.dot(tx.transpose(),y))
+    w = np.linalg.solve (np.dot(tx.transpose(),tx),np.dot(tx.transpose(),y))
     loss = compute_loss(y, tx, w)
-    
     return w, loss
-
 
 def ridge_regression(y, tx, lambda_):
-    """Ridge regression using normal equations."""
+
     n = len(y)
-    
     a = np.dot(tx.transpose(),tx)+(2*n)*lambda_*np.identity(tx.shape[1])
     b = np.dot(tx.transpose(),y)
-    
-    w = np.linalg.solve(a, b)
+    w =np.linalg.solve(a, b)
+
     loss = compute_loss(y, tx, w)
     return w, loss
-
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     
+    losses = []
+    w = initial_w
+    threshold = 1e-8
+    for n_iter in range(max_iters):
+        loss = calculate_logistic_loss(y,tx,w)
+        gradient = calculate_logistic_gradient (y,tx,w)
+        w = w - gamma*gradient
+        if iter % 100 == 0:
+            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+       
+        losses.append(loss)
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
     return w,loss
-
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma): 
-
+    losses = []
+    w = initial_w
+    threshold = 1e-8
+    for n_iter in range(max_iters):
+        loss = calculate_reg_logistic_loss(y,tx,w)
+        gradient = calculate_reg_logistic_gradient (y,tx,w)
+        w = w - gamma*gradient
+        losses.append(loss)
+        if iter % 100 == 0:
+            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
     return w,loss
-
-
-def compute_loss(y, tx, w):
-    """Compute the loss by MSE."""
-    e = y - tx.dot(w)
-    mse = e.dot(e) / (2* len(e))
-    return mse
-
-
-def compute_rmse(y, tx, w):
-    """Compute the loss by MSE."""
-    e = y - tx.dot(w)
-    mse = e.dot(e) / (2 * len(e))
-    rmse = (2*mse)**(1/2)
-    return rmse
-
-
-def build_poly(x, degree):
-    """Polynomial basis functions for input data x, for j=0 up to j=degree."""
-    phi = np.zeros((x.shape[0],degree+1))
-    for j in range (0,degree+1):
-        phi[:,j] = x**j
-    return phi
-
-
-def compute_gradient(y, tx, w):
-    """Compute the gradient."""
-    print ('Computing gradients ...')
-    
-    num_samples = len(y)
-    pred_y = np.dot(tx,w)
-    
-    error = y-pred_y
-    grad_w = (-1/num_samples)*np.dot(tx.transpose(),error)
-
-    return error, grad_w
-
-
-def standardize(x,id_axis):
-    """Standardize the original data set."""
-    mean_x = np.mean(x,axis=id_axis)
-    x = x - mean_x
-    std_x = np.std(x,axis=id_axis)
-    x = x / std_x
-    return x, mean_x, std_x
-
-
-def build_model_data(x, y):
-    """Form (y,tX) to get regression data in matrix form."""
-    num_samples = len(y)
-    tx = np.c_[np.ones(num_samples), x]
-    return y, tx
-
-
-def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
-    """
-    Generate a minibatch iterator for a dataset.
-    Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
-    Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
-    Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
-    Example of use :
-    for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
-        <DO-SOMETHING>
-    """
-    data_size = len(y)
-
-    if shuffle:
-        shuffle_indices = np.random.permutation(np.arange(data_size))
-        shuffled_y = y[shuffle_indices]
-        shuffled_tx = tx[shuffle_indices]
-    else:
-        shuffled_y = y
-        shuffled_tx = tx
-    for batch_num in range(num_batches):
-        start_index = batch_num * batch_size
-        end_index = min((batch_num + 1) * batch_size, data_size)
-        if start_index != end_index:
-            yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
-            
-def split_data(x, y, ratio, seed=1):
-    """split the dataset based on the split ratio."""
-    # set seed
-    np.random.seed(seed)
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # split the data based on the given ratio: TODO
-    # ***************************************************
-    num_samples = len(x)
-    indices = np.random.permutation(num_samples)
-    indices_training = indices[0:int(np.floor(ratio * num_samples))]
-    indices_test = indices [int(np.floor(ratio * num_samples)):num_samples]
-    train_x = x[indices_training]
-    train_y = y[indices_training]
-    test_x = x[indices_test]
-    test_y = y[indices_test]
-    
-    return train_x, train_y, test_x, test_y
