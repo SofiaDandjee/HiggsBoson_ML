@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def standardize(x,id_axis):
     """Standardize the original data set."""
     mean_x = np.mean(x,axis=id_axis)
@@ -14,6 +15,7 @@ def build_model_data(x, y):
     num_samples = len(y)
     tx = np.c_[np.ones(num_samples), x]
     return y, tx
+
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -40,24 +42,24 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
+            
 def split_data(x, y, ratio, seed=1):
     """split the dataset based on the split ratio."""
     # set seed
     np.random.seed(seed)
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # split the data based on the given ratio: TODO
-    # ***************************************************
     num_samples = len(x)
+    
     indices = np.random.permutation(num_samples)
     indices_training = indices[0:int(np.floor(ratio * num_samples))]
     indices_test = indices [int(np.floor(ratio * num_samples)):num_samples]
+    
     train_x = x[indices_training]
     train_y = y[indices_training]
     test_x = x[indices_test]
     test_y = y[indices_test]
     
     return train_x, train_y, test_x, test_y
+
 
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
