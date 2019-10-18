@@ -1,4 +1,5 @@
 import numpy as np
+from data_helpers import *
 from compute_gradient import *
 from cost import *
 
@@ -26,23 +27,24 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
         
     return w, losses[-1]
 
-def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    
-    losses = []
+def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, printing=True):
+  
     w = initial_w
+    
     for n_iter in range(max_iters):
         for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
         
             # compute gradient and loss
-        
             _, grad = compute_gradient(minibatch_y,minibatch_tx,w)
+            loss = compute_loss(minibatch_y,minibatch_tx,w)
     
             # update w by gradient
-        
             w = w - gamma*grad
-            
-    loss = compute_loss(minibatch_y,minibatch_tx,w)
-    losses.append(loss)
+        
+        if printing==True: 
+            print("SGD({bi}/{ti}): loss={l}, weights={w}".format(
+                bi=n_iter, ti=max_iters - 1, l=loss, w=w))   
+    
     return w, loss
 
 def least_squares(y, tx):
