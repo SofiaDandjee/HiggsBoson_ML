@@ -13,8 +13,9 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         
         #ws.append(w)
         #losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}, weights = {we}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, we = w ))
+        print("Gradient Descent({bi}/{ti}): loss={l}".format(
+              bi=n_iter, ti=max_iters - 1, l=loss))
+        print("weights = {we}".format(we = w))
         
     return w, loss
 
