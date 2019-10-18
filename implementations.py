@@ -2,7 +2,7 @@ import numpy as np
 from compute_gradient import *
 from cost import *
 
-def least_squares_GD(y, tx, initial_w, max_iters, gamma):
+def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
 
     w = initial_w
     losses = []
@@ -16,13 +16,15 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         w = w - gamma*grad
         
         losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1]-losses[-2]) < thres :
+        if len(losses) > 1 and np.abs(losses[-1]-losses[-2]) < thres:
+            #TODO: write a comment to explain to the user why it broke
             break
-        #loss = losses [-1]   
-        print("Gradient Descent({bi}/{ti}): loss={l}, weights = {we}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, we = w ))
+            
+        if printing==True:    
+            print("Gradient Descent({bi}/{ti}): loss={l}, weights = {we}".format(
+                bi=n_iter, ti=max_iters - 1, l=loss, we = w ))
         
-    return w, loss
+    return w, losses[-1]
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     
