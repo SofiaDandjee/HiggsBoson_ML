@@ -1,6 +1,32 @@
 import numpy as np
 
 
+def treat_undefined_values(bounds, tX):
+    """Modify the original data set to treat undefined values."""
+    indices = []
+    undefined = -999.00
+
+    for j in range(tX.shape[1]):
+        count = 0
+        score = 0.0
+
+        for i in range(tX.shape[0]):
+            if (tX[i,j] == undefined):
+                count += 1
+
+        score = count*1.0/(tX.shape[0])
+
+        #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
+        if (score > bounds[1]):
+            indices.append(j)
+        #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
+        elif(score > bounds[0]):
+            tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
+
+#tX=np.delete(tX, indices, axis=1)
+    return np.delete(tX, indices, axis=1), indices
+
+
 def standardize(x,id_axis):
     """Standardize the original data set."""
     mean_x = np.mean(x,axis=id_axis)
@@ -42,22 +68,22 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
-            
+
 def split_data(x, y, ratio, seed=1):
     """split the dataset based on the split ratio."""
     # set seed
     np.random.seed(seed)
     num_samples = len(x)
-    
+
     indices = np.random.permutation(num_samples)
     indices_training = indices[0:int(np.floor(ratio * num_samples))]
     indices_test = indices [int(np.floor(ratio * num_samples)):num_samples]
-    
+
     train_x = x[indices_training]
     train_y = y[indices_training]
     test_x = x[indices_test]
     test_y = y[indices_test]
-    
+
     return train_x, train_y, test_x, test_y
 
 
@@ -66,5 +92,5 @@ def build_poly(x, degree):
     phi = np.zeros((x.shape[0],degree+1))
     for j in range (0,degree+1):
         phi[:,j] = x**j
-        
+
     return phi
