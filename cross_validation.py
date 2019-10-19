@@ -10,15 +10,16 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 
-def cross_validation (y, x, k,seed):
-
+def cross_validation (y, x, k, seed):
+    """add comment"""
+    # split data in k fold
     k_indices = build_k_indices(y, k, seed)
-    
-    y_val = y[k_indices[k-1,:]]
-    x_val = x[k_indices[k-1,:]]
+    # get k'th subgroup in test, others in train
+    y_test = y[k_indices[k-1,:]]
+    x_test = x[k_indices[k-1,:]]
     k_indices_del = np.delete(k_indices,k-1,0)
-    y_tr = np.ravel(y[k_indices_del])
-    x_tr = np.ravel(x[k_indices_del])
+    y_train = np.ravel(y[k_indices_del])
+    x_train = np.ravel(x[k_indices_del])
     
-    return x_tr, y_tr, x_val, y_val
+    return x_train, y_train, x_test, y_test
     
