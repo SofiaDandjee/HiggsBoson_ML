@@ -73,8 +73,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         loss = calculate_logistic_loss(y,tx,w)
         gradient = calculate_logistic_gradient (y,tx,w)
         w = w - gamma*gradient
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        if n_iter % 100 == 0:
+            print("Current iteration={i}, loss={l}".format(i=n_iter, l=loss))
        
         losses.append(loss)
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
