@@ -98,7 +98,7 @@ def build_poly_all_features(x, degree):
     "build polynomial for all features"
     num_features = x.shape[1]
     tx = x
-    for feature in range(num_features-1):
-        for deg in range(2,degree):
+    for feature in range(num_features):
+        for deg in range(2,degree+1):
             tx = np.c_[tx, x[:,feature]**deg]
     return tx
