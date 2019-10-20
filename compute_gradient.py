@@ -1,5 +1,9 @@
 import numpy as np
 
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    return 1/(1+np.exp(-t))
+
 def compute_gradient(y, tx, w):
     """Compute the gradient."""
     num_samples = len(y)
