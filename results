@@ -1,0 +1,11 @@
+Submission results
+
+Least Square GD with CV: 0.648
+
+Least Square SGD with CV: 0.635
+
+Least Squares: 0.658
+
+Ridge Regression with CV: 0.658
+
+Ridge Regression with CV and data processing: 0.658 ???
