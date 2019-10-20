@@ -9,3 +9,14 @@ Least Squares: 0.658
 Ridge Regression with CV: 0.658
 
 Ridge Regression with CV and data processing: 0.658 ???
+
+
+TO DO
+
+comprendre le problème avec data processing
+répétition de code pour CV --> fonctionnaliser
+Ridge regression avec build poly
+Logistic regression
+
+autres plots ?
+readme, rapport
