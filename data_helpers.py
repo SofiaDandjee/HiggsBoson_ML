@@ -108,5 +108,5 @@ def build_poly_superior_degree(x, superior_degree):
     num_features = x.shape[1]
     tx = x
     for feature in range(num_features):
-        tx = np.c_[tx, x[:,feature]**superior degree]
+        tx = np.c_[tx, x[:,feature]**superior_degree]
     return tx
