@@ -10,13 +10,13 @@ Ridge Regression with CV: 0.658
 
 Ridge Regression with CV and data processing: 0.658 ???
 
+Ridge Regression with CV, data processing and data feature: 0.660 (no comment...)
+
 
 TO DO
 
 comprendre le problème avec data processing
-répétition de code pour CV --> fonctionnaliser
-speeder le code !!!
-Ridge regression avec build poly
+répétition de code --> fonctionnaliser
 Logistic regression
 
 autres plots ?
@@ -25,9 +25,9 @@ readme, rapport
 
 
 
+FEATURE SELECTION
 
-
-Corrélation avec le RESULTAT FINAL !!!!! -> colonnes les moins corrélées au résultat final :
+Classement des features les moins importantes pour la prédiction:
 30 -> corrélée avec 4, 5, 6, 12, 26, 27, 28
 29 -> comme 30
 24 -> 
@@ -41,11 +41,7 @@ Corrélation avec le RESULTAT FINAL !!!!! -> colonnes les moins corrélées au r
 26
 14
 
-
-
-
-
-classement des plus importantes pour prédire :
+Classement des features les plus importantes pour la prédiction
 4
 13
 9
@@ -54,9 +50,7 @@ classement des plus importantes pour prédire :
 21
 11
 
-
-
-Ce qu’on vire au FINAL :
+Les features qu’on vire au final (en prenant en compte la matrice de corrélation):
 30 
 29
 27
