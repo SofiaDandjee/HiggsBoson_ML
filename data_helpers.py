@@ -102,11 +102,3 @@ def build_poly_all_features(x, degree):
         for deg in range(2,degree+1):
             tx = np.c_[tx, x[:,feature]**deg]
     return tx
-
-def build_poly_superior_degree(x, superior_degree):
-    "build polynomial with one degree more than the one given"
-    num_features = x.shape[1]
-    tx = x
-    for feature in range(num_features):
-        tx = np.c_[tx, x[:,feature]**superior degree]
-    return tx
