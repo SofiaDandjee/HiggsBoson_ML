@@ -21,3 +21,47 @@ Logistic regression
 
 autres plots ?
 readme, rapport
+
+
+
+
+
+
+Corrélation avec le RESULTAT FINAL !!!!! -> colonnes les moins corrélées au résultat final :
+30 -> corrélée avec 4, 5, 6, 12, 26, 27, 28
+29 -> comme 30
+24 -> 
+28 -> comme 30
+7
+8
+27
+31
+25
+6
+26
+14
+
+
+
+
+
+classement des plus importantes pour prédire :
+4
+13
+9
+15
+12
+21
+11
+
+
+
+Ce qu’on vire au FINAL :
+30 
+29
+27
+25
+28
+6
+
+

@@ -20,8 +20,8 @@ def treat_undefined_values(bounds, tX):
         if (score > bounds[1]):
             indices.append(j)
         #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
-        elif(score > bounds[0]):
-            tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
+        #elif(score > bounds[0]):
+            #tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
 
 #tX=np.delete(tX, indices, axis=1)
     return np.delete(tX, indices, axis=1), indices
