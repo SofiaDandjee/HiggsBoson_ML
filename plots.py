@@ -12,4 +12,4 @@ def plot_cross_validation(extra_param, extra_param_name, best_extra_param, rmse_
     plt.title("Cross validation")
     plt.legend(loc=2)
     plt.grid(True)
-    plt.savefig("Cross validation")
+    plt.show()
