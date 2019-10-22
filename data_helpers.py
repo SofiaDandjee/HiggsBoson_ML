@@ -25,34 +25,38 @@ def treat_undefined_values(bounds, tX):
             
     return np.delete(tX, indices, axis=1), indices
 
-def treat_undefined_values(bounds, tX):
+def remove_undefined_values(tX):
     """Modify the original data set to treat undefined values."""
-    indices = []
+    num_features = tX.shape[1]
+    
     undefined = -999.00
-
+    mean_features = np.zeros(num_features)
     for j in range(tX.shape[1]):
         count = 0
         #score = 0.0
-        sum_features = 0.0
+        sum_feature = 0.0
         for i in range(tX.shape[0]):
             if (tX[i,j] != undefined):
-                sum_features += tX[i,j]
+                sum_feature += tX[i,j]
                 count += 1
+        mean_features[j] = sum_feature/count
+    print(mean_features)
+    print(mean_features.shape)
+    for i in range (tX.shape[0]):
+        for j in range (tX.shape[1]):
+            if tX[i,j] == undefined:
+                tX[i,j] = mean_features[j]
+    return tX          
+            
+        
     
-
-        #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
-        if (score > bounds[1]):
-            indices.append(j)
-        #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
-        elif(score > bounds[0]):
-            tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
             
     return np.delete(tX, indices, axis=1), indices
 
 def standardize(x,id_axis):
     """Standardize the original data set."""
     mean_x = np.mean(x,axis=id_axis)
-    x = x - mean_x
+    x = x - mean_x.T
     std_x = np.std(x,axis=id_axis)
     x = x / std_x
     return x, mean_x, std_x
