@@ -4,7 +4,7 @@ from compute_gradient import *
 from cost import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
-
+    "Least squares using gradient descent"
     w = initial_w
     losses = []
     thres = 1e-8
@@ -28,7 +28,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
     return w, losses[-1]
 
 def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, printing=True):
-  
+      "Least squares using stochastic gradient descent"
     w = initial_w
     
     for n_iter in range(max_iters):
@@ -65,33 +65,43 @@ def ridge_regression(y, tx, lambda_):
     return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    
     losses = []
-    w = initial_w
-    threshold = 1e-8
-    for n_iter in range(max_iters):
-        loss = calculate_logistic_loss(y,tx,w)
-        gradient = calculate_logistic_gradient (y,tx,w)
-        w = w - gamma*gradient
-        if n_iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=n_iter, l=loss))
-       
-        losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
+    for iter in range(max_iter):
+        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
+            
+            gradient = logistic_gradient (batch_y,batch_tx,w)
+            w -= gamma*gradient
+            
+            loss = logistic_loss (batch_y,batch_tx,w)
+           
+            
+            losses.append(loss)
+        print("Gradient Descent({bi}/{ti}): loss={l}".format(
+                  bi=iter, ti=max_iter - 1, l=loss))
+            
+
+    loss = logistic_loss(y,tx,w)
+    
     return w,loss
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma): 
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma): 
+    num_samples = len(y)
     losses = []
     w = initial_w
-    threshold = 1e-8
-    for n_iter in range(max_iters):
-        loss = calculate_reg_logistic_loss(y,tx,w)
-        gradient = calculate_reg_logistic_gradient (y,tx,w)
-        w = w - gamma*gradient
+    for iter in range(max_iter):
+        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
+            
+            gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
+            w -= gamma*gradient
+            
+            loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)
+           
+            
         losses.append(loss)
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
+        print("Gradient Descent({bi}/{ti}): loss={l}".format(
+                  bi=iter, ti=max_iter - 1, l=loss))
+            
+
+    loss = reg_logistic_loss(y,tx,w)
+    
     return w,loss

@@ -40,19 +40,13 @@ def remove_undefined_values(tX):
                 sum_feature += tX[i,j]
                 count += 1
         mean_features[j] = sum_feature/count
-    print(mean_features)
-    print(mean_features.shape)
+   
     for i in range (tX.shape[0]):
         for j in range (tX.shape[1]):
             if tX[i,j] == undefined:
                 tX[i,j] = mean_features[j]
     return tX          
             
-        
-    
-            
-    return np.delete(tX, indices, axis=1), indices
-
 def standardize(x,id_axis):
     """Standardize the original data set."""
     mean_x = np.mean(x,axis=id_axis)
@@ -141,3 +135,4 @@ def classify (y):
     for i in range(len(y)):
         if y[i] == -1:
             y[i] = 0
+    return y
