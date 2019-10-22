@@ -136,3 +136,8 @@ def build_poly_superior_degree(x, superior_degree):
     for feature in range(num_features):
         tx = np.c_[tx, x[:,feature]**superior_degree]
     return tx
+
+def classify (y):
+    for i in range(len(y)):
+    if y[i] == -1:
+        y[i] = 0
