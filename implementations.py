@@ -28,7 +28,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
     return w, losses[-1]
 
 def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, printing=True):
-      "Least squares using stochastic gradient descent"
+    "Least squares using stochastic gradient descent"
     w = initial_w
     
     for n_iter in range(max_iters):
@@ -66,21 +66,25 @@ def ridge_regression(y, tx, lambda_):
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     losses = []
-    for iter in range(max_iter):
+    w = initial_w
+    num_samples = len(y)
+    for iter in range(max_iters):
+        sum_loss = 0
         for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
             
             gradient = logistic_gradient (batch_y,batch_tx,w)
             w -= gamma*gradient
             
             loss = logistic_loss (batch_y,batch_tx,w)
-           
+            sum_loss += loss
             
             losses.append(loss)
+        av_loss = sum_loss/num_samples
         print("Gradient Descent({bi}/{ti}): loss={l}".format(
-                  bi=iter, ti=max_iter - 1, l=loss))
+                  bi=iter, ti=max_iters - 1, l=av_loss))
             
 
-    loss = logistic_loss(y,tx,w)
+    loss = logistic_loss(y,tx,w)/num_samples
     
     return w,loss
 
@@ -89,19 +93,22 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
     losses = []
     w = initial_w
     for iter in range(max_iter):
+        sum_loss = 0
         for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
             
             gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
             w -= gamma*gradient
-            
             loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)
-           
+            sum_loss += loss
             
         losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}".format(
-                  bi=iter, ti=max_iter - 1, l=loss))
+        #Average of the loss after an interation over all the samples
+        # 1 iteration = num_samples * batches of 1 sample used
+        av_loss = sum_loss/num_samples
+        #print("Gradient Descent({bi}/{ti}): loss={l}".format(
+                  #bi=iter, ti=max_iter - 1, l=av_loss))
             
-
-    loss = reg_logistic_loss(y,tx,w)
-    
+    #Calculate loss over the whole training set
+    loss = reg_logistic_loss(y,tx,w,lambda_)/num_samples
+    print(loss)
     return w,loss
