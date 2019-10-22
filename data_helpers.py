@@ -139,5 +139,5 @@ def build_poly_superior_degree(x, superior_degree):
 
 def classify (y):
     for i in range(len(y)):
-    if y[i] == -1:
-        y[i] = 0
+        if y[i] == -1:
+            y[i] = 0
