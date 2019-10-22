@@ -13,7 +13,13 @@ def compute_gradient(y, tx, w):
 
 def logistic_gradient(y, tx, w):
     """compute the gradient of loss."""
+    a = sigmoid(np.dot(tx,w))-y
+    print(a)
+    b = tx.transpose()
+    print(b)
+    print(b.dot(a))
     gradient = np.dot(tx.transpose(),(sigmoid(np.dot(tx,w))-y))
+    
     return gradient
 
 def reg_logistic_gradient(y, tx, w, lambda_):

@@ -17,7 +17,6 @@ def logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
     #print ('Computing loss')
     pred = sigmoid(tx.dot(w))
-    #print (tx.dot(w))
     loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
  
     return np.squeeze(- loss)
