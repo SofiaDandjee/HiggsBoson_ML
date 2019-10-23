@@ -15,10 +15,11 @@ def treat_undefined_values(bounds, tX):
                 count += 1
 
         score = count*1.0/(tX.shape[0])
-
+        #print(score)
         #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
         if (score > bounds[1]):
             indices.append(j)
+            
         #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
         elif(score > bounds[0]):
             tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
