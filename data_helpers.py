@@ -34,7 +34,7 @@ def remove_undefined_values(tX):
     mean_features = np.zeros(num_features)
     for j in range(tX.shape[1]):
         count = 0
-        #score = 0.0
+        
         sum_feature = 0.0
         for i in range(tX.shape[0]):
             if (tX[i,j] != undefined):
