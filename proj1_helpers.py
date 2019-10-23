@@ -23,8 +23,9 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
-def predict_accuracy (tx, weights_star):
+def predict_accuracy (y, tx, weights_star):
     y_pred_training = predict_labels(weights_star, tx,'logistic')
+    num_samples = len(y_pred_training)
     count = 0
     for i in range(num_samples):
         if (y_pred_training[i] == -1 and y[i] == 0):
