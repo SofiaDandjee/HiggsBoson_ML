@@ -23,6 +23,16 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
+def predict_accuracy (tx, weights_star):
+    y_pred_training = predict_labels(weights_star, tx,'logistic')
+    count = 0
+    for i in range(num_samples):
+        if (y_pred_training[i] == -1 and y[i] == 0):
+            count += 1
+        elif (y_pred_training[i] == y[i]):
+            count += 1
+    accuracy = (count *100) / num_samples
+    return accuracy
 
 def predict_labels(weights, data, regression = 'linear'):
     """Generates class predictions given weights, and a test data matrix"""
