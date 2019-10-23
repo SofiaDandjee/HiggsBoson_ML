@@ -109,6 +109,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
                   #bi=iter, ti=max_iter - 1, l=av_loss))
             
     #Calculate loss over the whole training set
-    loss = reg_logistic_loss(y,tx,w,lambda_)/num_samples
+    loss = reg_logistic_loss(y,tx,w,lambda_)
     print(loss)
     return w,loss
