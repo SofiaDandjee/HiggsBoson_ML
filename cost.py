@@ -13,9 +13,8 @@ def compute_loss_rmse(y, tx, w):
     rmse = (2*compute_loss(y,tx,w))**(1/2)
     return rmse
 
-def ridge_loss (y,tx,w,lambda_):
+def ridge_loss(y,tx,w,lambda_):
     loss = compute_loss (y,tx,w) + lambda_*np.squeeze(w.T.dot(w)) #L2-reg
-    
     return loss
 
 def logistic_loss(y, tx, w):
