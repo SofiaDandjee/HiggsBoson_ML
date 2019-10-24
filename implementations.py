@@ -92,10 +92,13 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
     num_samples = len(y)
     losses = []
     w = initial_w
+    
     for iter in range(max_iter):
+        print(iter)
         sum_loss = 0
+        count = 0
         for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
-            
+            count +=1
             gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
             w -= gamma*gradient
             loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)
@@ -104,10 +107,10 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
         losses.append(loss)
         #Average of the loss after an interation over all the samples
         # 1 iteration = num_samples * batches of 1 sample used
-        av_loss = sum_loss/num_samples
+        av_loss = sum_loss/count
         #print("Gradient Descent({bi}/{ti}): loss={l}".format(
                   #bi=iter, ti=max_iter - 1, l=av_loss))
-        print(av_loss)
+        #print(av_loss)
         
     #Calculate loss over the whole training set
     loss = reg_logistic_loss(y,tx,w,lambda_)
