@@ -5,13 +5,18 @@ from compute_gradient import sigmoid
 def compute_loss(y, tx, w):
     """compute the loss by mse."""
     e = y - tx.dot(w)
-    mse = e.dot(e) / (2* len(e))
+    mse = np.sum(e**2) / (2* len(e))
     return mse
 
 def compute_loss_rmse(y, tx, w):
     """compute the loss by rmse."""
     rmse = (2*compute_loss(y,tx,w))**(1/2)
     return rmse
+
+def ridge_loss (y,tx,w,lambda_):
+    loss = compute_loss (y,tx,w) + lambda_*np.squeeze(w.T.dot(w)) #L2-reg
+    
+    return loss
 
 def logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
