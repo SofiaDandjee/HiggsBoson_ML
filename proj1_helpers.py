@@ -24,24 +24,32 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 def predict_accuracy (y, tx, weights_star, regression = 'linear'):
-    y_pred_training = predict_labels(weights_star, tx,'linear')
+    y_pred_training = predict_labels(weights_star, tx,regression)
     num_samples = len(y_pred_training)
     count = 0
-    for i in range(num_samples):
-        if (y_pred_training[i] == y[i]):
-            count += 1
-    
+    if regression == 'linear':
+        for i in range(num_samples):
+            if (y_pred_training[i] == y[i]):
+                count += 1
+    elif regression == 'logistic':
+        for i in range(num_samples):
+            if (y_pred_training[i] == -1 and y[i] == 0):
+                count += 1
+            if (y_pred_training[i] == 1 and y[i] == 1):
+                count +=1
+                
     accuracy = (count *100) / num_samples
     return accuracy
 
 def predict_labels(weights, data, regression = 'linear'):
     """Generates class predictions given weights, and a test data matrix"""
+    y_pred = np.dot(data, weights)
     if regression == 'linear':
-        y_pred = np.dot(data, weights)
+        print('linear')
         y_pred[np.where(y_pred <= 0)] = -1
         y_pred[np.where(y_pred > 0)] = 1
     elif regression == 'logistic':
-        y_pred = np.dot(data, weights)
+        print('logistic')
         y_pred[np.where(y_pred <= 0.5)] = -1
         y_pred[np.where(y_pred > 0.5)] = 1
         
