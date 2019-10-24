@@ -59,9 +59,9 @@ def ridge_regression(y, tx, lambda_):
     n = len(y)
     a = np.dot(tx.transpose(),tx)+(2*n)*lambda_*np.identity(tx.shape[1])
     b = np.dot(tx.transpose(),y)
-    w =np.linalg.solve(a, b)
+    w = np.linalg.solve(a, b)
 
-    loss = compute_loss(y, tx, w)
+    loss = ridge_loss(y, tx, w, lambda_)
     return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
