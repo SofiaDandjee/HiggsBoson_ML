@@ -10,6 +10,7 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 
+
 def cross_validation (y, x, k, k_fold, seed):
     """add comment"""
     # split data in k_folds

@@ -1,7 +1,45 @@
 import numpy as np
 
+def clean_data(tx):
+    
+    bound = 0.5
+    
+    #remove features with more than 50% of undefined values
+    tx,indices = remove_features (bound,tx)
+    
+    tx = undefined_to_nan (tx)
+    
+    tx,_,_ = standardize (tx,0)
+    
+    tx = nan_to_zero(tx)
+    
+    return tx,indices
 
-def treat_undefined_values(bounds, tX):
+def augment_data(tx, y, degree) :
+    
+    tx = build_poly_all_features (tx,degree)
+    y,tx = build_model_data(tx,y)
+    
+    return tx, y
+
+def get_jet_samples (tx):
+    
+    jet0_samples = np.where(tx[:,22]==0)[0]
+    jet1_samples = np.where(tx[:,22]==1)[0]
+    jet2_samples = np.where(tx[:,22]>=2)[0]
+    
+    return [jet0_samples, jet1_samples, jet2_samples]
+
+def undefined_to_nan(tx):
+    undefined = -999.00
+    x [x == undefined] = np.nan
+    return x
+
+def nan_to_zero(tx):
+    x [x==nan] = 0
+    return x
+
+def remove_features(bound, tX):
     """Modify the original data set to treat undefined values."""
     indices = []
     undefined = -999.00
@@ -17,42 +55,20 @@ def treat_undefined_values(bounds, tX):
         score = count*1.0/(tX.shape[0])
         
         #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
-        if (score > bounds[1]):
+        if (score > bound):
             indices.append(j)
             
         #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
-        elif(score > bounds[0]):
-            tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
+        #elif(score > bounds[0]):
+            #tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
             
-    return np.delete(tX, indices, axis=1), indices
-
-def remove_undefined_values(tX):
-    """Modify the original data set to treat undefined values."""
-    num_features = tX.shape[1]
-    
-    undefined = -999.00
-    mean_features = np.zeros(num_features)
-    for j in range(tX.shape[1]):
-        count = 0
-        
-        sum_feature = 0.0
-        for i in range(tX.shape[0]):
-            if (tX[i,j] != undefined):
-                sum_feature += tX[i,j]
-                count += 1
-        mean_features[j] = sum_feature/count
-   
-    for i in range (tX.shape[0]):
-        for j in range (tX.shape[1]):
-            if tX[i,j] == undefined:
-                tX[i,j] = mean_features[j]
-    return tX          
+    return np.delete(tX, indices, axis=1), indices     
             
 def standardize(x,id_axis):
     """Standardize the original data set."""
-    mean_x = np.mean(x,axis=id_axis)
+    mean_x = np.nanmean(x,axis=id_axis)
     x = x - mean_x.T
-    std_x = np.std(x,axis=id_axis)
+    std_x = np.nanstd(x,axis=id_axis)
     x = x / std_x
     return x, mean_x, std_x
 
