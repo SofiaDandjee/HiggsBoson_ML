@@ -1,19 +1,17 @@
 import numpy as np
 
 def clean_data(tx):
-    
-    bound = 0.5
-    
-    #remove features with more than 50% of undefined values
-    tx,indices = remove_features (bound,tx)
-    
-    tx = undefined_to_nan (tx)
-    
-    tx,_,_ = standardize (tx,0)
-    
-    tx = nan_to_zero(tx)
-    
-    return tx,indices
+    #print('Undefined to nan')
+   
+    tx_nan = undefined_to_nan (tx)
+   
+    tx_light,indices = remove_features (tx_nan)
+
+    tx_std,_,_ = standardize (tx_light,0)
+ 
+    tx = nan_to_zero(tx_std)
+
+    return tx, indices
 
 def augment_data(tx, y, degree) :
     
@@ -32,37 +30,39 @@ def get_jet_samples (tx):
 
 def undefined_to_nan(tx):
     undefined = -999.00
-    x [x == undefined] = np.nan
-    return x
+    tx [tx == undefined] = np.nan
+    return tx
 
 def nan_to_zero(tx):
-    x [x==nan] = 0
-    return x
+    tx = np.nan_to_num(tx)
+    return tx
 
-def remove_features(bound, tX):
+def remove_features(tX):
     """Modify the original data set to treat undefined values."""
-    indices = []
-    undefined = -999.00
+    
+    nan_features = list(np.where(np.all(np.isnan(tX), axis=0))[0])
+    
+    std_zero_features = list(np.where(np.nanstd(tX, axis=0)==0)[0])
+    
+    indices = np.concatenate((nan_features, std_zero_features))
+    
+    tx = np.delete(tX, indices, axis=1)
+    
+    #for j in range(tX.shape[1]):
+        #count = 0
+        #score = 0.0
 
-    for j in range(tX.shape[1]):
-        count = 0
-        score = 0.0
+        #for i in range(tX.shape[0]):
+            #if (tX[i,j] == undefined):
+                #count += 1
 
-        for i in range(tX.shape[0]):
-            if (tX[i,j] == undefined):
-                count += 1
-
-        score = count*1.0/(tX.shape[0])
+        #score = count*1.0/(tX.shape[0])
         
         #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
-        if (score > bound):
-            indices.append(j)
+        #if (score > bound):
+            #indices.append(j)
             
-        #If the column contains a significantly number of undefined values, but less than above -> we try to replace theses values by the mean of the same column
-        #elif(score > bounds[0]):
-            #tX[:,j][tX[:,j] == undefined] = (np.mean(tX, axis=0))[j]
-            
-    return np.delete(tX, indices, axis=1), indices     
+    return tx, indices     
             
 def standardize(x,id_axis):
     """Standardize the original data set."""
