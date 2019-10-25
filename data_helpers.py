@@ -1,7 +1,6 @@
 import numpy as np
 
 def clean_data(tx):
-    #print('Undefined to nan')
    
     tx_nan = undefined_to_nan (tx)
    
@@ -41,34 +40,23 @@ def remove_features(tX):
     """Modify the original data set to treat undefined values."""
     
     nan_features = list(np.where(np.all(np.isnan(tX), axis=0))[0])
-    
+
     std_zero_features = list(np.where(np.nanstd(tX, axis=0)==0)[0])
+    
     
     indices = np.concatenate((nan_features, std_zero_features))
     
+
     tx = np.delete(tX, indices, axis=1)
-    
-    #for j in range(tX.shape[1]):
-        #count = 0
-        #score = 0.0
-
-        #for i in range(tX.shape[0]):
-            #if (tX[i,j] == undefined):
-                #count += 1
-
-        #score = count*1.0/(tX.shape[0])
-        
-        #If the column contains more than a certain percentage of undefined values -> we delete the column (and thus we ignore the corresponding feature)
-        #if (score > bound):
-            #indices.append(j)
             
     return tx, indices     
             
 def standardize(x,id_axis):
     """Standardize the original data set."""
     mean_x = np.nanmean(x,axis=id_axis)
-    x = x - mean_x.T
+    x = x - mean_x
     std_x = np.nanstd(x,axis=id_axis)
+    
     x = x / std_x
     return x, mean_x, std_x
 
