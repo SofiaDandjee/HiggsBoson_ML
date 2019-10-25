@@ -1,7 +1,7 @@
 import numpy as np
 
 def sigmoid(t):
-    """apply sigmoid function on t."""
+    """Apply sigmoid function on t."""
     return 1/(1+np.exp(-t))
 
 def compute_gradient(y, tx, w):
@@ -12,11 +12,11 @@ def compute_gradient(y, tx, w):
     return error, grad_w
 
 def logistic_gradient(y, tx, w):
-    """compute the gradient of logistic loss."""
+    """Compute the gradient of logistic loss."""
     gradient = np.dot(tx.transpose(),(sigmoid(np.dot(tx,w))-y))
     return gradient
 
 def reg_logistic_gradient(y, tx, w, lambda_):
-    """compute the gradient of regularized logistic loss."""
+    """Compute the gradient of regularized logistic loss."""
     gradient = logistic_gradient(y, tx, w) + 2 * lambda_ * w
     return gradient
