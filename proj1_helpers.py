@@ -24,11 +24,17 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 def compute_f1_score(y, tx, w, regression = 'linear'):
+    """Compute the f1 score, ie the harmonic mean of p and r where p is the number
+    of correct positive results divided by the number of all positive results returned by our prediction,
+    and r is the number of correct positive results divided by the number of all relevant samples."""
     y_pred_training = predict_labels(w, tx, regression)
     num_samples = len(y_pred_training)
     ind_pos_pred = np.ravel(np.where(y_pred_training==1))
+    #Number of positive results returned by our prediction
     count_pos_training = ind_pos_pred.shape[0]
+    #Number of relevant samples (ie positive results in y)
     count_relevant_pos = 0
+    #Number of correct positive results
     count_true_pos = 0
                            
     if regression == 'linear':
@@ -48,6 +54,7 @@ def compute_f1_score(y, tx, w, regression = 'linear'):
     
     p = count_true_pos/count_pos_training
     r = count_true_pos/count_relevant_pos
+    # Harmonic mean
     f1_score = 2/(1/p + 1/r)
     print(f1_score)
     return f1_score
