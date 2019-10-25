@@ -23,7 +23,7 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
-def predict_accuracy (y, tx, w, regression = 'linear'):
+def predict_accuracy(y, tx, w, regression = 'linear'):
     y_pred_training = predict_labels(w, tx,regression)
     num_samples = len(y_pred_training)
     count = 0

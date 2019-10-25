@@ -1,16 +1,45 @@
 import numpy as np
 
-def clean_data(tx):
-   
-    tx_nan = undefined_to_nan (tx)
-   
-    tx_light,indices = remove_features (tx_nan)
+def get_jet_samples(tx):
+    
+    jet0_samples = np.where(tx[:,22]==0)[0]
+    jet1_samples = np.where(tx[:,22]==1)[0]
+    jet2_samples = np.where(tx[:,22]>=2)[0]
+    
+    return [jet0_samples, jet1_samples, jet2_samples]
+  
+            
+def standardize(x):
+    """Standardize the original data set."""
+    mean = np.nanmean(x,axis=0)
+    x = x - mean
+    
+    std = np.nanstd(x,axis=0)
+    x = x / std
+    
+    return x, mean, std
 
-    tx_std,_,_ = standardize (tx_light,0)
- 
-    tx = nan_to_zero(tx_std)
+
+def clean_data(tx):
+    #replace undefined values (equal to -999 in the data) by NaN 
+    tx[tx == -999] = np.nan
+    
+    # find columns full of NaN
+    nan_features = list(np.where(np.all(np.isnan(tx), axis=0))[0])
+    # find features that have constant value (standard deviation equal to 0)
+    constant_features = list(np.where(np.nanstd(tx, axis=0)==0)[0])
+    # remove selected columns
+    indices = np.concatenate((nan_features, constant_features))
+    tx = np.delete(tx, indices, axis=1)
+   
+    #standardize
+    tx,_,_ = standardize(tx)
+     
+    # replace NaN values by 0    
+    tx = np.nan_to_num(tx)
 
     return tx, indices
+
 
 def augment_data(tx, y, degree) :
     
@@ -18,47 +47,6 @@ def augment_data(tx, y, degree) :
     y,tx = build_model_data(tx,y)
     
     return tx, y
-
-def get_jet_samples (tx):
-    
-    jet0_samples = np.where(tx[:,22]==0)[0]
-    jet1_samples = np.where(tx[:,22]==1)[0]
-    jet2_samples = np.where(tx[:,22]>=2)[0]
-    
-    return [jet0_samples, jet1_samples, jet2_samples]
-
-def undefined_to_nan(tx):
-    undefined = -999.00
-    tx [tx == undefined] = np.nan
-    return tx
-
-def nan_to_zero(tx):
-    tx = np.nan_to_num(tx)
-    return tx
-
-def remove_features(tX):
-    """Modify the original data set to treat undefined values."""
-    
-    nan_features = list(np.where(np.all(np.isnan(tX), axis=0))[0])
-
-    std_zero_features = list(np.where(np.nanstd(tX, axis=0)==0)[0])
-    
-    
-    indices = np.concatenate((nan_features, std_zero_features))
-    
-
-    tx = np.delete(tX, indices, axis=1)
-            
-    return tx, indices     
-            
-def standardize(x,id_axis):
-    """Standardize the original data set."""
-    mean_x = np.nanmean(x,axis=id_axis)
-    x = x - mean_x
-    std_x = np.nanstd(x,axis=id_axis)
-    
-    x = x / std_x
-    return x, mean_x, std_x
 
 
 def build_model_data(x, y):
@@ -93,7 +81,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
-
+            
 def split_data(x, y, ratio, seed=1):
     """split the dataset based on the split ratio."""
     # set seed
@@ -119,6 +107,7 @@ def build_poly(x, degree):
         phi[:,j] = x**j
     return phi
 
+
 def build_poly_all_features(x, degree):
     "build polynomial for all features"
     num_features = x.shape[1]
@@ -129,13 +118,6 @@ def build_poly_all_features(x, degree):
             tx = np.c_[tx, x[:,feature]**deg]
     return tx
 
-def build_poly_superior_degree(x, superior_degree):
-    "build polynomial with one degree more than the one given"
-    num_features = x.shape[1]
-    tx = x
-    for feature in range(num_features):
-        tx = np.c_[tx, x[:,feature]**superior_degree]
-    return tx
 
 def classify (y):
     for i in range(len(y)):
