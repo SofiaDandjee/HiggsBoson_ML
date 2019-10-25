@@ -23,8 +23,38 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
+def compute_f1_score(y, tx, w, regression = 'linear'):
+    y_pred_training = predict_labels(w, tx, regression)
+    num_samples = len(y_pred_training)
+    ind_pos_pred = np.ravel(np.where(y_pred_training==1))
+    count_pos_training = ind_pos_pred.shape[0]
+    count_relevant_pos = 0
+    count_true_pos = 0
+                           
+    if regression == 'linear':
+        for i in range(num_samples):
+             if (y[i] == 1):
+                count_relevant_pos += 1
+                if (y_pred_training[i] == 1):
+                    count_true_pos += 1
+    
+                           
+    elif regression == 'logistic': 
+        for i in range(num_samples):
+            if (y[i] == 1):
+                count_relevant_pos += 1
+                if (y_pred_training[i] == 1):
+                    count_true_pos += 1         
+    
+    p = count_true_pos/count_pos_training
+    r = count_true_pos/count_relevant_pos
+    f1_score = 2/(1/p + 1/r)
+    print(f1_score)
+    return f1_score
+
 def predict_accuracy(y, tx, w, regression = 'linear'):
-    y_pred_training = predict_labels(w, tx,regression)
+    """Compute the percentage of matching between predictions and test data."""
+    y_pred_training = predict_labels(w, tx, regression)
     num_samples = len(y_pred_training)
     count = 0
     if regression == 'linear':
