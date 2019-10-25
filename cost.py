@@ -13,11 +13,6 @@ def compute_loss_rmse(y, tx, w):
     rmse = (2*compute_loss(y,tx,w))**(1/2)
     return rmse
 
-def ridge_loss(y,tx,w,lambda_):
-    """Compute the ridge loss by mse."""
-    loss = compute_loss (y,tx,w) #+ lambda_*np.squeeze(w.T.dot(w)) 
-    return loss
-
 def logistic_loss(y, tx, w):
     """Compute the cost by negative log likelihood."""
     num_samples = len(y)
