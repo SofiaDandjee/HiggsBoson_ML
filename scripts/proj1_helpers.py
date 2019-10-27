@@ -28,9 +28,12 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 def compute_f1_score(y, tx, w, regression = 'linear'):
-    """Compute the f1 score, ie the harmonic mean of p and r where p is the number
-    of correct positive results divided by the number of all positive results returned by our prediction,
-    and r is the number of correct positive results divided by the number of all relevant samples."""
+    """Compute the f1 score given labelled data input data and optimal weights, 
+    ie the harmonic mean of p and r where p is the number of correct positive
+    results divided by the number of all positive results returned by our prediction,
+    and r is the number of correct positive results divided by the number of all relevant samples.
+    Can be used for linear or logistic regression. """
+    
     y_pred_training = predict_labels(w, tx, regression)
     num_samples = len(y_pred_training)
     ind_pos_pred = np.ravel(np.where(y_pred_training==1))
@@ -64,7 +67,9 @@ def compute_f1_score(y, tx, w, regression = 'linear'):
     return f1_score
 
 def predict_accuracy(y, tx, w, regression = 'linear'):
-    """Compute the percentage of matching between predictions and test data."""
+    """Compute the percentage of matching between predictions and actual labels
+    given optimal weights w and input data y and tx. Can be used for linear and logistic
+    regression. """
     y_pred_training = predict_labels(w, tx, regression)
     num_samples = len(y_pred_training)
     count = 0
@@ -83,7 +88,8 @@ def predict_accuracy(y, tx, w, regression = 'linear'):
     return accuracy
 
 def predict_labels(weights, data, regression = 'linear'):
-    """Generates class predictions given weights, and a test data matrix"""
+    """Generates class predictions given weights, and a test data matrix.
+    Can be used for linear (default) and logistic regression. """
     y_pred = np.dot(data, weights)
     if regression == 'linear':
         y_pred[np.where(y_pred <= 0)] = -1
@@ -96,7 +102,8 @@ def predict_labels(weights, data, regression = 'linear'):
 
 
 def build_k_indices(y, k_fold, seed):
-    """Build k indices for k-fold."""
+    """Build k indices for k-fold. Helper functions for
+    cross-validation. """
     num_row = y.shape[0]
     interval = int(num_row / k_fold) 
     #Generate random indices
@@ -122,6 +129,7 @@ def cross_validation (y, x, k, k_fold, seed):
     
 
 def classify (y):
+    """ Converts label y from linear to logistic range"""
     for i in range(len(y)):
         if y[i] == -1:
             y[i] = 0

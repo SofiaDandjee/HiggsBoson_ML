@@ -4,9 +4,13 @@ from compute_gradient import *
 from cost import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
-    """Least squares using gradient descent."""
+    """Linear regression using gradient descent for max_iters iteration given
+    the input labelled data y, tx with initial_w and gamma as the initial weight and the
+    learning rate respectively. Returns final weights and loss"""
+    
     w = initial_w
     losses = []
+    
     #Set a threshold to stop the iterations before max_iters if a great approximation of the optimum is obtained
     thres = 1e-8 
     
@@ -33,7 +37,10 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
     return w, losses[-1]
 
 def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, printing=True):
-    """Least squares using stochastic gradient descent."""
+    """Linear regression using stochastic gradient descent for max_iters iteration given
+    the input labelled data y, tx with initial_w and gamma as the initial weight and the
+    learning rate respectively. Returns final weights and loss"""
+    
     w = initial_w
     
     #SGD iterations on batches of batch_size size
@@ -52,7 +59,8 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, printing=T
     return w, loss
 
 def least_squares(y, tx):
-    """Calculate optimal w by least squares."""
+    """Calculate optimal w and loss by least squares given input labelled
+    data y and tx. Return weights and loss."""
     n = len(y)
     w = np.linalg.solve (np.dot(tx.transpose(),tx),np.dot(tx.transpose(),y))
     loss = compute_loss(y, tx, w)
@@ -60,7 +68,8 @@ def least_squares(y, tx):
     return w, loss
 
 def ridge_regression(y, tx, lambda_):
-    """Calculate optimal w by ridge regression -> L2-regularization."""
+    """Calculate optimal w and loss by ridge regression given input labelled
+    data tx and y. Returns weights and loss."""
     n = len(y)
     a = np.dot(tx.transpose(),tx)+(2*n)*lambda_*np.identity(tx.shape[1])
     b = np.dot(tx.transpose(),y)
@@ -71,7 +80,9 @@ def ridge_regression(y, tx, lambda_):
     return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    """Logistic regression using gradient descent on batches."""
+    """Logistic regression using gradient descent for max_iters iteration given
+    the input labelled data y, tx with initial_w and gamma as the initial weight and the
+    learning rate respectively. Returns final weights and loss"""
     losses = []
     w = initial_w
     num_samples = len(y)
@@ -80,7 +91,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     for iter in range(max_iters):
         sum_loss = 0
         
-        #We iterate on batches of the whole dataset
         for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = 1):
             
             #Compute gradient and update weight
@@ -97,7 +107,10 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return w, loss
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma): 
-    """Logistic regression using gradient descent on batches with L2-regularization."""
+    """Regularized logistic regression using gradient descent for max_iters iteration given
+    the input labelled data y, tx with initial_w, gamma and lambda as the initial weight,
+    learning rate and regularization factor respectively. Returns final weights and loss"""
+    
     num_samples = len(y)
     losses = []
     w = initial_w
@@ -110,11 +123,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
             gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
             w -= gamma*gradient
             loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)
-            sum_loss += loss
+            
             
         losses.append(loss)
 
-        av_loss = sum_loss/count
+        
 
         
     #Calculate loss over the whole training set with L2-regularization
