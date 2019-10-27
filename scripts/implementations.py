@@ -80,20 +80,19 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     for iter in range(max_iters):
         sum_loss = 0
         
-        #We iterate on batches of the whole dataset (num_batches = num_samples)
-        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
+        #We iterate on batches of the whole dataset
+        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = 1):
             
+            #Compute gradient and update weight
             gradient = logistic_gradient (batch_y,batch_tx,w)
             w -= gamma*gradient
-           
+            
+            #Compute loss
             loss = logistic_loss (batch_y,batch_tx,w)
-            sum_loss += loss
+            
             losses.append(loss)
-        
-        #We average the loss on the batches
-        av_loss = sum_loss/num_samples
 
-    loss = logistic_loss(y,tx,w)/num_samples
+    loss = logistic_loss(y,tx,w)
     
     return w, loss
 
