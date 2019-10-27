@@ -2,9 +2,4 @@
 .ipynb_checkpoints
 __pycache__/
 data/
-cross_validation_group0_log.ipynb
-least_squares_GD.ipynb
-least_squares_SGD.ipynb
-least_squares.ipynb
-reg_logistic_regression.ipynb
-ridge_regression.ipynb
+notebooks/
