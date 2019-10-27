@@ -20,8 +20,7 @@ python run.py
 
 - `sigmoid`: Sigmoid function
 - `load_csv_data`: Loads data from a csv file
-- `compute_f1_score`: Computes the F1 score of a prediction
-- `predict_accuracy`: Computes the accuracy of a prediction
+- `compute_f1_score`, `predict_accuracy`: Computes the accuracy and the F1 score of a prediction
 - `predict_labels`: Generates class predictions for a linear or a logistic regression 
 - `build_k_indices`, `cross_validation` : Generate the training and validation data for cross-validation
 - `classify`: Converts the (-1,1) of a label vector into (0,1), to use for the logistic regression
