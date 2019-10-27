@@ -1,7 +1,7 @@
 # Higgs Boson Machine Learning Challenge
 EPFL CS-433 Machine Learning - Project 1
 
-**`Tshtsh club`**: Marie Anselmet, Sofia Dandjee, Heloise Monnet
+**`Tshtsh_club`**: Marie Anselmet, Sofia Dandjee, Heloise Monnet
 
 
 ## Run the project
