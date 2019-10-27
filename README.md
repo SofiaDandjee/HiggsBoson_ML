@@ -1,12 +1,12 @@
 # Higgs Boson Machine Learning Challenge
 EPFL CS-433 Machine Learning - Project 1
 
-**`Tshtsh_club`**: Marie Anselmet, Sofia Dandjee, Heloise Monnet
+**`Tshtsh_club`**: Marie Anselmet, Sofia Dandjee, Héloïse Monnet
 
 
 ## Run the project
 
-1. Download the training an test dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
+1. Download the training and test dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
 3. Go to `script\` folder and run ```run.py```. You will get ```submission.csv``` for Kaggle in the ```submission\``` folder.
 
 ~~~~shell
