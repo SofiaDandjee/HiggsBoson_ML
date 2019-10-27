@@ -1,6 +1,6 @@
 import numpy as np
 
-from compute_gradient import sigmoid 
+from proj1_helpers import sigmoid 
 
 def compute_loss(y, tx, w):
     """Compute the loss by mse for linear regression."""

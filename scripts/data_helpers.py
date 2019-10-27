@@ -2,6 +2,7 @@ import numpy as np
 
 def get_jet_samples(tx):
     
+    """ Returns the indexes of the samples for each value (0, 1 or 2) of the jet feature"""
     jet0_samples = np.where(tx[:,22]==0)[0]
     jet1_samples = np.where(tx[:,22]==1)[0]
     jet2_samples = np.where(tx[:,22]>=2)[0]
@@ -21,6 +22,8 @@ def standardize(x):
 
 
 def clean_data(tx):
+    
+    """Removes undefined values and useless features and standardizes data."""
     #replace undefined values (equal to -999 in the data) by NaN 
     tx[tx == -999] = np.nan
     
@@ -42,6 +45,8 @@ def clean_data(tx):
 
 
 def augment_data(tx, y, degree) :
+    
+    """Builds polynomial features for an input data tx and adds the bias term"""
     
     tx = build_poly_all_features (tx,degree)
     y,tx = build_model_data(tx,y)
