@@ -22,6 +22,7 @@ python run.py
 ## Modules and Notebook
 
 ### ```proj1_helpers.py```
+
 Helper functions to load raw csv data into NumPy array, generate class predictions and create an output file in csv format for submission to Kaggle.
 
 ### ```cost.py```
