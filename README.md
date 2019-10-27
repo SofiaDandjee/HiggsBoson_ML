@@ -1,17 +1,12 @@
 # Higgs Boson Machine Learning Challenge
 EPFL CS-433 Machine Learning - Project 1
 
-**`Team`**: **Tshtsh club**
-
-**`Team Members`:** Marie Anselmet, Sofia Dandjee, Heloise Monnet
+**`Tshtsh club`**: Marie Anselmet, Sofia Dandjee, Heloise Monnet
 
 
-## Instructions
+## Run the project
 
-In order to reproduce the result we submitted to Kaggle, please follow the instructions as following:
-
-1. Please make sure ```Python 3.6``` and ```NumPy>=1.15``` are installed.
-2. Kindly download dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
+1. Download the training an test dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
 3. Go to `script\` folder and run ```run.py```. You will get ```submission.csv``` for Kaggle in the ```submission\``` folder.
 
 ~~~~shell
@@ -19,32 +14,39 @@ cd script
 python run.py
 ~~~~
 
-## Modules and Notebook
+## Script files
 
 ### ```proj1_helpers.py```
 
-Helper functions to load raw csv data into NumPy array, generate class predictions and create an output file in csv format for submission to Kaggle.
+- `sigmoid`: Sigmoid function
+- `load_csv_data`: Loads data from a csv file
+- `compute_f1_score`, `predict_accuracy`: Computes the accuracy and the F1 score of a prediction
+- `predict_labels`: Generates class predictions for a linear or a logistic regression 
+- `build_k_indices`, `cross_validation` : Generate the training and validation data for cross-validation
+- `classify`: Converts the (-1,1) of a label vector into (0,1), to use for the logistic regression
+- `batch_iter`: Generates a mini-batch for a dataset
+- `create_csv_submission`: Creates a csv output file for submission to Kaggle
 
 ### ```cost.py```
 
-Helper functions for data preprocessing, feature engineering and regression model training.
-
-- `preprocessing`: Preprocess train/test data with methods below.
-  - `standardize`: Standardize data set ignoring NaN.
-  - `delta_angle_norm`, `add_phi`: Add new phi features according to organizer's suggestions.
-  - `apply_log1p`: Apply log normalization to long-tailed features.
-  - `drop_useless`: Drop useless columns, including raw phi angles, columns with the same values, columns full of NaN.
-  - `fill_missing`, `fill_nan`: Mark missing values with NaN and then fill them with zero.
-- `train_predict`: Train and predict each group using polynomial ridge regression.
-  - `get_jet_index`: Get the index of three groups.
-  - `build_poly_feature`: Build polynomial features for input data.
+- `compute_loss`: Computes the loss by mse for linear regression
+- `compute_loss_rmse`: Compute the loss by rmse for linear regression
+- `logistic_loss`: Compute the loss by negative log likelihood for the logistic regression
+- `reg_logistic_loss` : Compute the regularized logistic loss by negative log likelihood
 
 ### ```compute_gradient.py```
 
+- `compute_gradient`: Computes the gradient for the linear gradient descent
+- `logistic_gradient`: Compute the gradient for the logistic gradient descent
+- `reg_logistic_gradient`: Compute the gradient for the regularized logistic gradient descent
+
 ### ```data_helpers.py```
 
-### ```implementations.py```
+- `get_jet_samples`: Divides the input data depending of their jet values
+- `clean_data`, `standardize` : Standardizes data, removes undefined values and features with a nul standard deviation
+- `augment_data`, `build_model_data`, `build_poly`, `build_poly_all_features`: Augment the data by building polynomial features
 
+### ```implementations.py```
 
 - `least_squares_GD`: Linear regression using gradient descent.
 - `least_squares_SGD`: Linear regression using stochastic gradient descent.
@@ -53,13 +55,9 @@ Helper functions for data preprocessing, feature engineering and regression mode
 - `logistic_regression`: Logistic regression using stochastic gradient.
 - `reg_logistic_regression`: Regularized logistic regression using stochastic gradient descent.
 
-### ```Cross Validation.ipynb```
-
-Notebook with the cross validation results and related functions.
-
 ### ```run.py```
 
-Script to generate the same submission file as we submitted in Aircrowd.
+Script to produce the same .csv predictions used in the best submission of the Aircrowd platform
 
 
 
