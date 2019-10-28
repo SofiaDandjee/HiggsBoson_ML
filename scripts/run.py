@@ -15,13 +15,13 @@ from cost import compute_loss
 
 
 # Load train and test data
+print("Loading train and test data sets...\n")
 # data paths
 DATA_TRAIN_PATH = "../data/train.csv"
 DATA_TEST_PATH = "../data/test.csv"
 # load data
 y_train, x_train, ids_train = load_csv_data(DATA_TRAIN_PATH)
 y_test, x_test, ids_test = load_csv_data(DATA_TEST_PATH)
-print("Train and test data sets loaded")
 
 
 # Split the data in three groups in function of the "PRI num jet" value
