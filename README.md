@@ -31,7 +31,6 @@ python run.py
 ### ```cost.py```
 
 - `compute_loss`: Computes the loss by mse for linear regression.
-- `compute_loss_rmse`: Compute the loss by rmse for linear regression.
 - `logistic_loss`: Compute the loss by negative log likelihood for the logistic regression.
 - `reg_logistic_loss` : Compute the regularized logistic loss by negative log likelihood.
 
