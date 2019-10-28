@@ -44,7 +44,7 @@ python run.py
 
 - `get_jet_samples`: Divides the input data depending of their jet values.
 - `clean_data`, `standardize` : Standardizes data, removes undefined values and features with a null standard deviation.
-- `augment_data`, `build_model_data`, `build_poly`, `build_poly_all_features`: Augment the data by building polynomial features.
+- `augment_data`, `build_model_data`,`build_poly_all_features`: Augment the data by building polynomial features.
 
 ### ```implementations.py```
 
@@ -57,7 +57,7 @@ python run.py
 
 ### ```run.py```
 
-Script to produce the same .csv predictions used in the best submission of the Aircrowd platform.
+Script to produce the same .csv predictions used in the best submission on the Kaggle platform.
 
 
 
