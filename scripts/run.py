@@ -31,7 +31,7 @@ jet_test_samples = get_jet_samples(x_test)
 
 # Define hyper-parameters for the hyper-tuned ridge regression
 degrees = [12, 12, 12]
-lambdas = [1e-4, 1e-3, 1e-3]
+lambdas = [0.000147, 1e-3, 0.000464]
 
 
 
