@@ -1,0 +1,61 @@
+Submission results
+
+Least Square GD with CV: 0.648
+
+Least Square SGD with CV: 0.635
+
+Least Squares: 0.658
+
+Ridge Regression with CV: 0.658
+
+Ridge Regression with CV and data processing: 0.658 ???
+
+Ridge Regression with CV, data processing and data feature: 0.660 (no comment...)
+
+
+TO DO
+
+comprendre le problème avec data processing
+répétition de code --> fonctionnaliser
+Logistic regression
+
+autres plots ?
+readme, rapport
+
+
+
+
+FEATURE SELECTION
+
+Classement des features les moins importantes pour la prédiction:
+30 -> corrélée avec 4, 5, 6, 12, 26, 27, 28
+29 -> comme 30
+24 -> 
+28 -> comme 30
+7
+8
+27
+31
+25
+6
+26
+14
+
+Classement des features les plus importantes pour la prédiction
+4
+13
+9
+15
+12
+21
+11
+
+Les features qu’on vire au final (en prenant en compte la matrice de corrélation):
+30 
+29
+27
+25
+28
+6
+
+
