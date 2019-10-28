@@ -120,15 +120,12 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
        
         for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = 1):
             
-            gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
+            gradient = reg_logistic_gradient(batch_y,batch_tx,w, lambda_)
             w -= gamma*gradient
-            loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)
+            loss = reg_logistic_loss(batch_y,batch_tx,w,lambda_)
             
             
         losses.append(loss)
-
-        
-
         
     #Calculate loss over the whole training set with L2-regularization
     loss = reg_logistic_loss(y,tx,w,lambda_)

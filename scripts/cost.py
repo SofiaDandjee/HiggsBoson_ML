@@ -8,11 +8,6 @@ def compute_loss(y, tx, w):
     mse = np.sum(e**2) / (2* len(e))
     return mse
 
-def compute_loss_rmse(y, tx, w):
-    """Computes the loss by rmse for linear regression."""
-    rmse = (2*compute_loss(y,tx,w))**(1/2)
-    return rmse
-
 def logistic_loss(y, tx, w):
     """Computes the loss by negative log likelihood for the logistic regression."""
     epsilon = 1e-15
