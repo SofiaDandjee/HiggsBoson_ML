@@ -2,6 +2,7 @@ import numpy as np
 from data_helpers import *
 from compute_gradient import *
 from cost import *
+from proj1_helpers import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma, printing=True):
     """Linear regression using gradient descent for max_iters iteration given
@@ -116,10 +117,9 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iter, gamma):
     w = initial_w
     
     for iter in range(max_iter):
-        sum_loss = 0
-        count = 0
-        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = num_samples):
-            count +=1
+       
+        for batch_y, batch_tx in batch_iter(y, tx, batch_size=1, num_batches = 1):
+            
             gradient = reg_logistic_gradient (batch_y,batch_tx,w, lambda_)
             w -= gamma*gradient
             loss = reg_logistic_loss (batch_y,batch_tx,w,lambda_)

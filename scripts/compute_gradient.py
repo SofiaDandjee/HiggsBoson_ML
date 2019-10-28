@@ -1,5 +1,5 @@
 import numpy as np
-
+from proj1_helpers import *
 
 def compute_gradient(y, tx, w):
     """Computes the gradient for the linear gradient descent"""

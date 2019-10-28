@@ -63,7 +63,7 @@ def compute_f1_score(y, tx, w, regression = 'linear'):
     r = count_true_pos/count_relevant_pos
     # Harmonic mean
     f1_score = 2/(1/p + 1/r)
-    print(f1_score)
+    
     return f1_score
 
 def predict_accuracy(y, tx, w, regression = 'linear'):
@@ -78,6 +78,7 @@ def predict_accuracy(y, tx, w, regression = 'linear'):
             if (y_pred_training[i] == y[i]):
                 count += 1
     elif regression == 'logistic':
+        
         for i in range(num_samples):
             if (y_pred_training[i] == -1 and y[i] == 0):
                 count += 1
@@ -118,6 +119,7 @@ def cross_validation (y, x, k, k_fold, seed):
     """Randomly partition the data into k_fold groups to train and test each sub-dataset"""
     # Split data in k_folds
     k_indices = build_k_indices(y, k_fold, seed)
+    
     # Get k'th subgroup in test, others in train
     y_test = y[k_indices[k]]
     x_test = x[k_indices[k]]

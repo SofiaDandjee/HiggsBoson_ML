@@ -49,6 +49,8 @@ def clean_data(tx_train, tx_test):
     
     #standardize
     tx_train, mean, std = standardize(tx_train)
+    
+    #standardize test with train mean and std
     tx_test -= mean
     tx_test /= std
     
@@ -81,7 +83,6 @@ def build_model_data(x, y):
 
 def build_poly_all_features(x, degree):
     """ Augmentes all features of the input data x. """
-    
     num_features = x.shape[1]
     tx = x
     
