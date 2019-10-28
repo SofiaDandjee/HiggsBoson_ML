@@ -6,7 +6,8 @@ Machine Learning - Project 1
 
 ## Run the project
 
-1. Download the training and test dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
+1. Make sure that ```Python 3.7``` and ```NumPy 1.16``` are installed
+2. Download the training and test dataset from [Kaggle competition dataset](https://www.kaggle.com/c/11051/download-all), and put ```train.csv``` and ```test.csv``` into the ```data\``` folder.
 3. Go to `script\` folder and run ```run.py```. You will get ```submission.csv``` for Kaggle in the ```submission\``` folder.
 
 ~~~~shell
