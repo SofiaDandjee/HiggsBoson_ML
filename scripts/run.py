@@ -16,10 +16,10 @@ from cost import compute_loss
 
 # Load train and test data
 print("Loading train and test data sets...\n")
-# data paths
+# Data paths
 DATA_TRAIN_PATH = "../data/train.csv"
 DATA_TEST_PATH = "../data/test.csv"
-# load data
+# Load data
 y_train, x_train, ids_train = load_csv_data(DATA_TRAIN_PATH)
 y_test, x_test, ids_test = load_csv_data(DATA_TEST_PATH)
 
@@ -40,29 +40,29 @@ y_prediction_test = np.zeros(y_test.shape)
 mean_accuracy = 0
 mean_f1_score = 0
 
-# iterate through each of the three groups
+# Iterate through each of the three groups
 for i in range(3):
     print("Computing ridge regression for group {ind}...".format(ind=i))
     
-    #parameters
+    # Parameters
     degree = degrees[i]
     lambda_ =lambdas[i]
     
-    # get train and test data
+    # Get train and test data
     train_index = jet_train_samples[i]
     test_index = jet_test_samples[i]
     
     x_tr, y_tr = x_train[train_index], y_train[train_index]
     x_te, y_te = x_test[test_index], y_test[test_index]
     
-    # clean train and test data
+    # Clean train and test data
     x_tr,x_te = clean_data(x_tr, x_te)
     
-    # build polynomial data
+    # Build polynomial data
     x_tr, y_tr = augment_data (x_tr, y_tr, degree)
     x_te, y_te = augment_data (x_te, y_te, degree)
     
-    # train model
+    # Train model
     weights, loss = ridge_regression(y_tr, x_tr, lambda_)
     accuracy = predict_accuracy(y_tr, x_tr, weights)
     f1_score = compute_f1_score(y_tr, x_tr, weights)

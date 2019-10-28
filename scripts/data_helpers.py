@@ -1,8 +1,7 @@
 import numpy as np
 
 def get_jet_samples(tx):
-    
-    """ Returns the indexes of the samples that have 0,1 and 2 respectively
+    """ Return the indexes of the samples that have 0,1 and 2 respectively
         for the jet feature. """
     
     jet0_samples = np.where(tx[:,22]==0)[0] #indexes of samples with jet = 0
@@ -27,36 +26,36 @@ def standardize(x):
 
 
 def clean_data(tx_train, tx_test):
-    """Removes undefined values and useless features and standardizes training and test data."""
+    """Remove undefined values and useless features and standardizes training and test data."""
     
-    #replace undefined values (equal to -999 in the data) by NaN 
+    # Replace undefined values (equal to -999 in the data) by NaN 
     tx_train[tx_train == -999] = np.nan
     tx_test[tx_test == -999] = np.nan
     
-    # find columns full of NaN
+    # Find columns full of NaN
     nan_features = list(np.where(np.all(np.isnan(tx_train), axis=0))[0])
     
-    # find features that have constant value (standard deviation equal to 0)
+    # Find features that have constant value (standard deviation equal to 0)
     constant_features = list(np.where(np.nanstd(tx_train, axis=0)==0)[0])
     
-    # remove selected columns
+    # Remove selected columns
     indices = np.concatenate((nan_features, constant_features))
     
     tx_train = np.delete(tx_train, indices, axis=1)
     
-    #delete the same features in the test data
+    # Delete the same features in the test data
     tx_test = np.delete(tx_test, indices, axis=1)
     
-    #standardize
+    # Standardize
     tx_train, mean, std = standardize(tx_train)
     
-    #standardize test with train mean and std
+    # Standardize test with train mean and std
     tx_test -= mean
     tx_test /= std
     
-    #standardize test with the training mean and std
+    # Standardize test with the training mean and std
     
-    # replace NaN values by 0    
+    # Replace NaN values by 0    
     tx_train = np.nan_to_num(tx_train)
     tx_test = np.nan_to_num(tx_test)
     
@@ -64,8 +63,7 @@ def clean_data(tx_train, tx_test):
 
 
 def augment_data(tx, y, degree) :
-    
-    """Builds polynomial features for an input data tx and adds a column of 1
+    """Build polynomial features for an input data tx and add a column of 1
     for the bias term in the regression"""
     
     tx = build_poly_all_features (tx,degree)
@@ -82,7 +80,7 @@ def build_model_data(x, y):
     return y, tx
 
 def build_poly_all_features(x, degree):
-    """ Augmentes all features of the input data x. """
+    """ Augment all features of the input data x. """
     num_features = x.shape[1]
     tx = x
     

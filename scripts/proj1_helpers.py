@@ -9,17 +9,17 @@ def sigmoid(t):
     return 1/(1+np.exp(-t))
 
 def load_csv_data(data_path, sub_sample=False):
-    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+    """Load data and return y (class labels), tX (features) and ids (event ids)"""
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
     input_data = x[:, 2:]
 
-    # convert class labels from strings to binary (-1,1)
+    # Convert class labels from strings to binary (-1,1)
     yb = np.ones(len(y))
     yb[np.where(y=='b')] = -1
     
-    # sub-sample
+    # Sub-sample
     if sub_sample:
         yb = yb[::50]
         input_data = input_data[::50]
@@ -37,11 +37,11 @@ def compute_f1_score(y, tx, w, regression = 'linear'):
     y_pred_training = predict_labels(w, tx, regression)
     num_samples = len(y_pred_training)
     ind_pos_pred = np.ravel(np.where(y_pred_training==1))
-    #Number of positive results returned by our prediction
+    # Number of positive results returned by our prediction
     count_pos_training = ind_pos_pred.shape[0]
-    #Number of relevant samples (ie positive results in y)
+    # Number of relevant samples (ie positive results in y)
     count_relevant_pos = 0
-    #Number of correct positive results
+    # Number of correct positive results
     count_true_pos = 0
                            
     if regression == 'linear':
@@ -61,6 +61,7 @@ def compute_f1_score(y, tx, w, regression = 'linear'):
     
     p = count_true_pos/count_pos_training
     r = count_true_pos/count_relevant_pos
+    
     # Harmonic mean
     f1_score = 2/(1/p + 1/r)
     
@@ -89,7 +90,7 @@ def predict_accuracy(y, tx, w, regression = 'linear'):
     return accuracy
 
 def predict_labels(weights, data, regression = 'linear'):
-    """Generates class predictions given weights, and a test data matrix.
+    """Generate class predictions given weights, and a test data matrix.
     Can be used for linear (default) and logistic regression. """
     y_pred = np.dot(data, weights)
     if regression == 'linear':
@@ -107,10 +108,10 @@ def build_k_indices(y, k_fold, seed):
     cross-validation. """
     num_row = y.shape[0]
     interval = int(num_row / k_fold) 
-    #Generate random indices
+    # Generate random indices
     np.random.seed(seed) 
     indices = np.random.permutation(num_row)
-    #Contruct set of indices for the k different folds for cross validation
+    # Contruct set of indices for the k different folds for cross validation
     k_indices = [indices[k * interval: (k + 1) * interval]
                  for k in range(k_fold)]
     return np.array(k_indices)
@@ -131,22 +132,20 @@ def cross_validation (y, x, k, k_fold, seed):
     
 
 def classify (y):
-    """ Converts label y from linear to logistic range"""
+    """ Convert label y from linear to logistic range"""
     for i in range(len(y)):
         if y[i] == -1:
             y[i] = 0
     return y
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
-    """
-    Generate a minibatch iterator for a dataset.
+    """Generate a minibatch iterator for a dataset.
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
     Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
     Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
     Example of use :
     for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
-        <DO-SOMETHING>
-    """
+        <DO-SOMETHING> """
     data_size = len(y)
 
     if shuffle:
@@ -165,7 +164,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 def create_csv_submission(ids, y_pred, name):
     """
-    Creates an output file in csv format for submission to kaggle
+    Create an output file in csv format for submission to kaggle
     Arguments: ids (event ids associated with each prediction)
                y_pred (predicted class labels)
                name (string name of .csv output file to be created)

@@ -3,13 +3,13 @@ import numpy as np
 from proj1_helpers import sigmoid 
 
 def compute_loss(y, tx, w):
-    """Computes the loss by mean squared error for linear regression."""
+    """Compute the loss by mean squared error for linear regression."""
     e = y - tx.dot(w)
     mse = np.sum(e**2) / (2* len(e))
     return mse
 
 def logistic_loss(y, tx, w):
-    """Computes the loss by negative log likelihood for the logistic regression."""
+    """Compute the loss by negative log likelihood for the logistic regression."""
     epsilon = 1e-15
     num_samples = len(y)
     pred = sigmoid(tx.dot(w))
